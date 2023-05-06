@@ -7,7 +7,7 @@ namespace MagmaAPI
     {
         private const string FILENAME = "Static/data.json";
         
-        public static void Deserialize()
+        public static Models.Data Deserialize()
         {            
             string jsonString = File.ReadAllText(FILENAME);
             
@@ -19,6 +19,7 @@ namespace MagmaAPI
             Models.Data data = 
                 JsonSerializer.Deserialize<Models.Data>(jsonString, options);
             
+            return data;
         }
     }
 }

@@ -1,3 +1,4 @@
+using MagmaAPI.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,9 @@ namespace MagmaAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MagmaAPI", Version = "v1" });
             });
+
+            services.AddSingleton<DataController>();
+            services.AddSingleton(Serializer.Deserialize());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,8 +46,6 @@ namespace MagmaAPI
             {
                 endpoints.MapControllers();
             });
-
-            Serializer.Deserialize();
         }
     }
 }
