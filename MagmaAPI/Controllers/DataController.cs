@@ -2,6 +2,7 @@
 using MagmaAPI.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -17,19 +18,19 @@ namespace MagmaAPI.Controllers
             _data = data;
 
         [HttpGet("allData")]
-        public IActionResult GetData()
+        public ActionResult<Data> GetData()
         {            
             return Ok(_data);
         }
 
         [HttpGet("scan")]
-        public IActionResult GetScan()
+        public ActionResult<Scan> GetScan()
         {
             return Ok(_data.Scan);
         }
 
         [HttpGet("filenames")]
-        public IActionResult GetFilenames(bool correct)
+        public ActionResult<List<string>> GetFilenames(bool correct)
         {
             var filenames = _data.Files
                 .Where(f => f.Result == correct)
@@ -40,7 +41,7 @@ namespace MagmaAPI.Controllers
         }
 
         [HttpGet("errors")]
-        public IActionResult GetErrors()
+        public ActionResult<List<ErrorDto>> GetErrors()
         {
             var errorDtos = _data.Files
                 .Where(f => f.Result == false)
@@ -55,13 +56,13 @@ namespace MagmaAPI.Controllers
         }
 
         [HttpGet("errors/count")]
-        public IActionResult GetErrorsCount()
+        public ActionResult<int> GetErrorsCount()
         {
             return Ok(_data.Scan.ErrorCount);
         }
 
         [HttpGet("errors/{index}")]
-        public IActionResult GetError(int index)
+        public ActionResult<ErrorDto> GetError(int index)
         {
             if(index < 0 || index >= _data.Scan.ErrorCount)
             {
@@ -80,7 +81,7 @@ namespace MagmaAPI.Controllers
         }
 
         [HttpGet("query/check")]
-        public IActionResult GetQueryCheck()
+        public ActionResult<QueryCheckDto> GetQueryCheck()
         {
             var queryFiles = _data.Files
                 .Where(f => f.Filename.ToLower().StartsWith("query_"));
@@ -100,7 +101,7 @@ namespace MagmaAPI.Controllers
         }
 
         [HttpPost("newErrors")]
-        public IActionResult PostNewErrors(
+        public ActionResult PostNewErrors(
             [FromBody] NewErrorDto newErrorDto)
         {
             try
@@ -115,7 +116,7 @@ namespace MagmaAPI.Controllers
         }
 
         [HttpGet("service/serviceInfo")]
-        public IActionResult GetServiceInfo()
+        public ActionResult<ServiceInfoDto> GetServiceInfo()
         {
             var assembly = Assembly.GetExecutingAssembly();           
             var serviceInfoDto = new ServiceInfoDto
