@@ -42,6 +42,8 @@ namespace MagmaAPI
             {
                 endpoints.MapControllers();
             });
+
+            Serializer.Deserialize();
         }
     }
 }
